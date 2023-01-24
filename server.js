@@ -25,8 +25,26 @@ const io = require('socket.io')(app, {
     path: '/socket.io',
 })
 
+var members = {}
+
 io.on("connection", (socket) => {
     console.log(`[INFO] New socket: ${socket.id}`)
+
+    socket.on("new-cxn", (data) => {
+        members[socket.id] = data.uname
+
+        socket.emit("welcome-msg", {
+            user: "root",
+            msg: "Welcome!"
+        })
+    })
+
+    socket.on("new-msg", (data) => {
+        socket.broadcast.emit("broadcast-msg", {
+            user: members[data.user],
+            msg: data.msg,
+        })
+    })
 })
 
 // Handle requests
@@ -72,6 +90,7 @@ function reqHandler(req, resp) {
         else {
             resp.writeHead(200, { 'Content-Type': ctype })
             resp.end(content, 'utf-8')
+            console.log(`[INFO] File success! : ${fpath}`)
         }
     }) 
 }
