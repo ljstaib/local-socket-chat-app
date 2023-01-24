@@ -48,17 +48,31 @@ body {
     border-color: red !important;
 }
 
+.msg {
+    border-radius: 0.5em;
+    font-size: 1.2rem;
+    margin-top: 1em;
+    overflow: visible;
+    padding: 0.5em;
+    width: 100%;
+}
+
 .root-msg {
     background-color: aqua;
+    margin: 0 auto;
     text-align: center;
 }
 
 .own-msg {
     background-color:lightblue;
+    float: right;
     text-align: right;
+    width: 55%;
 }
 
 .not-own-msg {
     background-color: #aaa;
+    float: left;
     text-align: left;
+    width: 55%;
 }

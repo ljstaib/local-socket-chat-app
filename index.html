@@ -16,7 +16,8 @@
             <div id="chat-container"></div>
             <div class="center">
                 <form id="msg-form">
-                    <input class="input center" id="msg-input" type="text"/>
+                    <input class="input center" id="msg-input" type="text" maxlength="128"/>
+                    <label id="char-display">0/128</label>
                     <button class="button" id="send-button" type="submit">Send</button>
                 </form>
             </div>

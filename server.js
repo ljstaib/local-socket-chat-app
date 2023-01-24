@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
 
         socket.emit("welcome-msg", {
             user: "root",
-            msg: "Welcome!"
+            msg: `Welcome, ${data.uname}!`
         })
     })
 

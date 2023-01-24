@@ -7,7 +7,6 @@ const uname = prompt("Please enter a username: ")
 socket.emit("new-cxn", {uname})
 
 socket.on("welcome-msg", (data) => {
-    console.log(`[INFO] Received welcome message: ${data}`)
     addMsg(data, false)
 })
 
@@ -56,3 +55,11 @@ socket.on("broadcast-msg", (data) => {
     console.log(`[INFO] Broadcast: ${data}`)
     addMsg(data, false)
 })
+
+const textBox = document.getElementById("msg-input")
+textBox.addEventListener("input", displayChars)
+
+function displayChars(e) {
+    const str_out = document.getElementById("msg-input").value.length
+    document.getElementById("char-display").textContent = `${str_out}/128`
+}
