@@ -10,7 +10,24 @@ const app_port = process.env.APP_PORT || 3000
 const app = http.createServer(reqHandler)
 
 app.listen(app_port)
-console.log(`[INFO] HTTP Server running at ${app_port}`)
+console.log(`[INFO] HTTP Server running on port ${app_port}`)
+
+// Socket IO
+
+const io = require('socket.io')(app, {
+    allowEIO3: true,
+    cors: {
+        origin: "http://localhost",
+        methods: ["GET", "POST"],
+        credentials: true,
+        transports: ["websocket"]
+    },
+    path: '/socket.io',
+})
+
+io.on("connection", (socket) => {
+    console.log(`[INFO] New socket: ${socket.id}`)
+})
 
 // Handle requests
 function reqHandler(req, resp) {
@@ -19,6 +36,9 @@ function reqHandler(req, resp) {
     var fpath = req.url
     if (req.url == '/') {
         fpath = 'index.html'
+    }
+    else {
+        fpath = fpath.slice(1)
     }
 
     var ext = String(path.extname(fpath)).toLowerCase()
