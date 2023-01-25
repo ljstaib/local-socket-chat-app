@@ -33,6 +33,24 @@ function addMsg(data, isOwn=false) {
     chatDiv.append(msg)
 }
 
+function updateMembers(data) {
+    console.log(`Member data: ${JSON.stringify(data)}`)
+    const memberDiv = document.getElementById("members-list")
+    var mems = document.getElementsByClassName("member");
+
+    while(mems[0]) {
+        mems[0].parentNode.removeChild(mems[0]);
+    }
+
+    Object.values(data['users']).forEach(member => {
+        const memberElement = document.createElement("div")
+        memberElement.classList.add("member")
+        memberElement.innerText = member
+
+        memberDiv.append(memberElement)
+    });
+}
+
 const msgForm = document.getElementById("msg-form")
 
 msgForm.addEventListener("submit", (e) => {
@@ -47,6 +65,7 @@ msgForm.addEventListener("submit", (e) => {
         let msgSend = msgInput.value
         socket.emit("new-msg", {user: socket.id, msg: msgSend})
         addMsg({msg: msgSend}, true)
+        msgInput.classList.remove("error");
         msgInput.value = ""
     }
 })
@@ -54,6 +73,11 @@ msgForm.addEventListener("submit", (e) => {
 socket.on("broadcast-msg", (data) => {
     console.log(`[INFO] Broadcast: ${data}`)
     addMsg(data, false)
+})
+
+socket.on("update-members", (data) => {
+    console.log("[INFO] Updating members list")
+    updateMembers(data)
 })
 
 const textBox = document.getElementById("msg-input")

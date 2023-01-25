@@ -13,12 +13,19 @@
     <body>
         <div id="container">
             <h1 class="center" id="title">Chat App</h1>
-            <div id="chat-container"></div>
+            <div class="horizontal">
+                <div id="members-list">
+                    <h2 class="center border-below">Members</h2>
+                </div>
+                <div id="chat-container">
+                    <h2 class="center border-below">Chat</h2>
+                </div>
+            </div>
             <div class="center">
                 <form id="msg-form">
-                    <input class="input center" id="msg-input" type="text" maxlength="128"/>
-                    <label id="char-display">0/128</label>
+                    <input class="input center" id="msg-input" type="text" maxlength="128" autocomplete="off"/>
                     <button class="button" id="send-button" type="submit">Send</button>
+                    <label id="char-display">0/128</label>
                 </form>
             </div>
         </div>

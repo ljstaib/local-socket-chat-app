@@ -33,6 +33,11 @@ io.on("connection", (socket) => {
     socket.on("new-cxn", (data) => {
         members[socket.id] = data.uname
 
+        console.log(`Current members: ${JSON.stringify(Object.values(members))}`)
+        io.emit("update-members", {
+            users: members
+        })
+
         socket.emit("welcome-msg", {
             user: "root",
             msg: `Welcome, ${data.uname}!`

@@ -12,6 +12,27 @@ body {
     text-align: center;
 }
 
+.border-below {
+    border-bottom: 1px solid #aaa;
+}
+
+.horizontal {
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+#members-list {
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 1em;
+    height: 40em;
+    margin: auto;
+    overflow: scroll;
+    padding: 0.5em;
+    width: 20%;
+}
+
 #chat-container {
     background-color: white;
     border: 1px solid #aaa;
@@ -20,7 +41,7 @@ body {
     margin: auto;
     overflow: scroll;
     padding: 0.5em;
-    width: 80%;
+    width: 75%;
 }
 
 #msg-input {
@@ -55,11 +76,11 @@ body {
     overflow: visible;
     padding: 0.5em;
     width: 100%;
+    word-wrap: break-word;
 }
 
 .root-msg {
-    background-color: aqua;
-    margin: 0 auto;
+    background-color: #fafac1;
     text-align: center;
 }
 
@@ -67,12 +88,12 @@ body {
     background-color:lightblue;
     float: right;
     text-align: right;
-    width: 55%;
+    width: 50%;
 }
 
 .not-own-msg {
     background-color: #aaa;
     float: left;
     text-align: left;
-    width: 55%;
+    width: 50%;
 }
