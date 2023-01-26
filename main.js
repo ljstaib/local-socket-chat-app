@@ -2,7 +2,10 @@ console.log("[INFO] Main loaded.")
 
 var socket = io.connect()
 
-const uname = prompt("Please enter a username: ")
+let uname = null
+while (uname === null) {
+    uname = prompt("Please enter a username: ")
+}
 
 socket.emit("new-cxn", {uname})
 
@@ -25,7 +28,7 @@ function addMsg(data, isOwn=false) {
         }
         else {
             msg.classList.add("not-own-msg")
-            msg.innerText = `${data.user}: ${data.msg}`
+            msg.innerText = `[${data.user}] ${data.msg}`
         }
     }
 

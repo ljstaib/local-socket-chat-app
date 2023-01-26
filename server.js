@@ -31,7 +31,17 @@ io.on("connection", (socket) => {
     console.log(`[INFO] New socket: ${socket.id}`)
 
     socket.on("new-cxn", (data) => {
-        members[socket.id] = data.uname
+        //Check if username already exists
+        var flag = false
+        Object.keys(members).forEach(function(key) {
+            if (members[key] == data.uname) {
+                // Username already exists.
+                flag = true
+            }
+        });
+        // If username exists, give user a 16 digit hex username
+        flag ? members[socket.id] = require("crypto").randomBytes(8).toString('hex') : members[socket.id] = data.uname
+        data.uname = members[socket.id]
 
         console.log(`Current members: ${JSON.stringify(Object.values(members))}`)
         io.emit("update-members", {
@@ -48,6 +58,14 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("broadcast-msg", {
             user: members[data.user],
             msg: data.msg,
+        })
+    })
+
+    socket.on("disconnect", () => {
+        console.log(`Disconnect: ${socket.id}`)
+        delete members[socket.id]
+        io.emit("update-members", {
+            users: members
         })
     })
 })
