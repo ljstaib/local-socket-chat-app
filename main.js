@@ -1,10 +1,9 @@
-console.log("[INFO] Main loaded.")
-
 var socket = io.connect()
 
 let uname = null
-while (uname === null) {
+while (uname === null || uname.toLowerCase() === "root" || uname === "") {
     uname = prompt("Please enter a username: ")
+    uname = uname.replace(/\s/g, '') // remove whitespace
 }
 
 socket.emit("new-cxn", {uname})
@@ -37,7 +36,7 @@ function addMsg(data, isOwn=false) {
 }
 
 function updateMembers(data) {
-    console.log(`Member data: ${JSON.stringify(data)}`)
+    // console.log(`Member data: ${JSON.stringify(data)}`)
     const memberDiv = document.getElementById("members-list")
     var mems = document.getElementsByClassName("member");
 
@@ -52,6 +51,11 @@ function updateMembers(data) {
 
         memberDiv.append(memberElement)
     });
+}
+
+function updateMembersTitle(data) {
+    const membersTitle = document.getElementById("members-title")
+    membersTitle.innerText = `Members (${data['amount']}/4)`
 }
 
 const msgForm = document.getElementById("msg-form")
@@ -81,6 +85,10 @@ socket.on("broadcast-msg", (data) => {
 socket.on("update-members", (data) => {
     console.log("[INFO] Updating members list")
     updateMembers(data)
+})
+
+socket.on("update-member-title", (data) => {
+    updateMembersTitle(data)
 })
 
 const textBox = document.getElementById("msg-input")
