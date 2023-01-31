@@ -26,7 +26,7 @@ A simple web browser chat application using socket programming. The main purpose
 # Technologies Used
 - JavaScript (Node.js) for client and server
   - Libraries
-    - socket.io for socket programming (Credit: [https://socket.io/])
-    - bad-words for censorship (Credit: [github.com/web-mech/badwords])
+    - socket.io for socket programming (Credit: https://socket.io/)
+    - bad-words for censorship (Credit: https://github.com/web-mech/badwords)
 - HTML for the web page
 - CSS for styling
