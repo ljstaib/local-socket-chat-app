@@ -66,6 +66,11 @@ io.on("connection", (socket) => {
             user: "root",
             msg: `Welcome, ${cleanName}!`
         })
+
+        socket.broadcast.emit("new-member-msg", {
+            user: "root",
+            msg: `${cleanName} joined.`
+        })
     })
 
     socket.on("new-msg", (data) => {
@@ -80,10 +85,19 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log(`[INFO] Disconnect: ${members[socket.id]}`)
+        if (members[socket.id] !== null && members[socket.id] !== undefined) {
+            socket.broadcast.emit("member-left-msg", {
+                user: "root",
+                msg: `${members[socket.id]} left.`
+            })
+        }
+
         delete members[socket.id]
+
         io.emit("update-members", {
             users: members
         })
+
         io.emit("update-member-title", {
             amount: Object.keys(members).length
         })
@@ -93,8 +107,13 @@ io.on("connection", (socket) => {
 // Censor message and username text
 function censorText(txt) {
     filter = new Filter()
-
-    return filter.clean(txt)
+    var testLetters = /[a-zA-Z]/g
+    if (testLetters.test(txt)) {
+        return filter.clean(txt)
+    }
+    else {
+        return txt
+    }
 }
 
 // Handle requests

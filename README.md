@@ -21,12 +21,17 @@ A simple web browser chat application using socket programming. The main purpose
   - Share to the server when a new member has joined
   - Share to the server when a member has leaved
 - Username and chat message censorship
+- Measures against spam
+  - Chat cooldown of 3 seconds
+  - A user cannot enter the same message twice in a row
+- Auto-scrolling chat
 - Clean UI
 
 # Technologies Used
 - JavaScript (Node.js) for client and server
   - Libraries
     - socket.io for socket programming (Credit: https://socket.io/)
-    - bad-words for censorship (Credit: https://github.com/web-mech/badwords)
+    - bad-words for censorship (Credit: https://github.com/web-mech/badwords/)
+    - Node.js libraries: filesystem, HTTP, path
 - HTML for the web page
 - CSS for styling

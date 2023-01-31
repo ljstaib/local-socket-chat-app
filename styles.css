@@ -102,3 +102,8 @@ body {
     padding: 0.5em;
     border-bottom: 1px solid #aaa;
 }
+
+#error-msg {
+    color: red;
+    font-weight: bold;
+}

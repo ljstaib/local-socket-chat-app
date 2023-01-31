@@ -12,6 +12,10 @@ socket.on("welcome-msg", (data) => {
     addMsg(data, false)
 })
 
+socket.on("new-member-msg", (data) => {
+    addMsg(data, false)
+})
+
 function addMsg(data, isOwn=false) {
     const msg = document.createElement("div")
     msg.classList.add("msg")
@@ -33,6 +37,7 @@ function addMsg(data, isOwn=false) {
 
     const chatDiv = document.getElementById("chat-container")
     chatDiv.append(msg)
+    chatDiv.scrollTop = chatDiv.scrollHeight; //auto-scroll
 }
 
 function updateMembers(data) {
@@ -59,21 +64,35 @@ function updateMembersTitle(data) {
 }
 
 const msgForm = document.getElementById("msg-form")
+var timeCheck = 0
 
 msgForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const msgInput = document.getElementById("msg-input")
+    const errorMsg = document.getElementById("error-msg")
 
     if (msgInput.value === "") {
-        msgInput.classList.add("error");
+        //Reject empty message
+        msgInput.classList.add("error")
+        errorMsg.innerText = "Please enter a message."
+    }
+    else if (Date.now() - timeCheck <= 3000) {
+        //Chat message limit: 3 seconds between messages
+        msgInput.classList.add("error")
+        errorMsg.innerText = "Sending messages too fast! Time limit: 3 seconds."
     }
     else {
+        //Reset input field and send message
         let msgSend = msgInput.value
         socket.emit("new-msg", {user: socket.id, msg: msgSend})
         addMsg({msg: msgSend}, true)
-        msgInput.classList.remove("error");
         msgInput.value = ""
+
+        //Remove any error messages and start cooldown
+        msgInput.classList.remove("error")
+        errorMsg.innerText = ""
+        timeCheck = Date.now()
     }
 })
 
@@ -89,6 +108,10 @@ socket.on("update-members", (data) => {
 
 socket.on("update-member-title", (data) => {
     updateMembersTitle(data)
+})
+
+socket.on("member-left-msg", (data) => {
+    addMsg(data, false)
 })
 
 const textBox = document.getElementById("msg-input")
