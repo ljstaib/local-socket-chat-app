@@ -4,6 +4,7 @@
 var fs = require('fs')
 var http = require('http')
 var path = require('path')
+var Filter = require('bad-words')
 
 // Start server and handle HTTP requests
 const app_port = process.env.APP_PORT || 3000
@@ -37,17 +38,19 @@ io.on("connection", (socket) => {
             return null
         }
 
+        var cleanName = censorText(data.uname)
+
         //Check if username already exists
         var flag = false
         Object.keys(members).forEach(function(key) {
-            if (members[key] == data.uname) {
+            if (members[key] == cleanName) {
                 // Username already exists.
                 flag = true
             }
         });
         // If username exists, give user a 16 digit hex username
-        flag ? members[socket.id] = require("crypto").randomBytes(8).toString('hex') : members[socket.id] = data.uname
-        data.uname = members[socket.id]
+        flag ? members[socket.id] = require("crypto").randomBytes(8).toString('hex') : members[socket.id] = cleanName
+        cleanName = members[socket.id]
 
         console.log(`[INFO] Current members: ${JSON.stringify(Object.values(members))}`)
         io.emit("update-members", {
@@ -61,14 +64,17 @@ io.on("connection", (socket) => {
 
         socket.emit("welcome-msg", {
             user: "root",
-            msg: `Welcome, ${data.uname}!`
+            msg: `Welcome, ${cleanName}!`
         })
     })
 
     socket.on("new-msg", (data) => {
+        // Censor bad words in messages
+        let outStr = censorText(data.msg)
+
         socket.broadcast.emit("broadcast-msg", {
             user: members[data.user],
-            msg: data.msg,
+            msg: outStr,
         })
     })
 
@@ -83,6 +89,13 @@ io.on("connection", (socket) => {
         })
     })
 })
+
+// Censor message and username text
+function censorText(txt) {
+    filter = new Filter()
+
+    return filter.clean(txt)
+}
 
 // Handle requests
 function reqHandler(req, resp) {
