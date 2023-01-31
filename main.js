@@ -1,7 +1,7 @@
 var socket = io.connect()
 
 let uname = null
-while (uname === null || uname.toLowerCase() === "root" || uname === "") {
+while (uname === null || uname.toLowerCase() === "root" || uname === "" || uname == undefined) {
     uname = prompt("Please enter a username: ")
     uname = uname.replace(/\s/g, '') // remove whitespace
 }

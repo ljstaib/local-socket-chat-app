@@ -9,7 +9,7 @@ A simple web browser chat application using socket programming. The main purpose
 1. Download the repository.
 2. Navigate to the directory that the repository is located in and type `npm start` in a terminal.
 3. Open a web browser and go to `localhost:3000` (the application is not hosted yet)
-   1. Up to four users can connect and chat in real time.
+   1. You should be prompted to enter a username. If you are not, please refresh the page.
 4. To stop the server, simply cancel the process running `npm start` from step 2.
 
 # Features
