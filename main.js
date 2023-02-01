@@ -1,8 +1,8 @@
 var socket = io.connect()
 
 let uname = null
-while (uname === null || uname.toLowerCase() === "root" || uname === "" || uname == undefined) {
-    uname = prompt("Please enter a username: ")
+while (uname === null || uname.toLowerCase() === "root" || uname === "" || uname == undefined || uname.length > 16 || uname.length < 3) {
+    uname = prompt("Please enter a username (3-16 characters): ")
     uname = uname.replace(/\s/g, '') // remove whitespace
 }
 
@@ -31,7 +31,7 @@ function addMsg(data, isOwn=false) {
         }
         else {
             msg.classList.add("not-own-msg")
-            msg.innerText = `[${data.user}] ${data.msg}`
+            msg.innerText = `<${data.user}> ${data.msg}`
         }
     }
 
@@ -90,6 +90,7 @@ msgForm.addEventListener("submit", (e) => {
         msgInput.value = ""
 
         //Remove any error messages and start cooldown
+        document.getElementById("char-display").textContent = "0/128"
         msgInput.classList.remove("error")
         errorMsg.innerText = ""
         timeCheck = Date.now()
