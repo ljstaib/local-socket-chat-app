@@ -106,7 +106,7 @@ io.on("connection", (socket) => {
 
 // Censor message and username text
 function censorText(txt) {
-    filter = new Filter()
+    var filter = new Filter()
     var testLetters = /[a-zA-Z]/g
     if (testLetters.test(txt)) {
         return filter.clean(txt)
